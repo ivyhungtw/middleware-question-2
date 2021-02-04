@@ -2,6 +2,15 @@ const express = require('express')
 const app = express()
 const port = 3000
 
+const moment = require('moment')
+
+// Set up middlewares
+app.use(function (req, res, next) {
+  const date = moment().format('YYYY-MM-DD HH:mm:ss')
+  console.log(`${date} | ${req.method} from ${req.originalUrl}`)
+  next()
+})
+
 app.get('/', (req, res) => {
   res.send('列出全部 Todo')
 })
