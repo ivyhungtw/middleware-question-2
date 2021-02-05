@@ -10,8 +10,6 @@ let sendResponseTime
 // Set up middlewares
 app.use(function (req, res, next) {
   receiveRequestTime = moment()
-  // receiveRequestTime = moment().format('YYYY-MM-DD HH:mm:ss')
-  // console.log(`${date} | ${req.method} from ${req.originalUrl}`)
   next()
 })
 
