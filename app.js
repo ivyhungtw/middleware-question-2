@@ -20,7 +20,6 @@ function printTime(req, requestTime, responseTime) {
 // Set up middlewares
 app.use(function (req, res, next) {
   receiveRequestTime = moment()
-  console.log(receiveRequestTime)
   res.on('finish', () => {
     sendResponseTime = moment()
     printTime(req, receiveRequestTime, sendResponseTime)
