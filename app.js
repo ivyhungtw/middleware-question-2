@@ -1,15 +1,12 @@
 const express = require('express')
+const moment = require('moment')
+const responseTime = require('response-time')
+
 const app = express()
 const port = 3000
 
-const moment = require('moment')
-
-let receiveRequestTime
-let sendResponseTime
-
 // Functions
-function printTime(req, requestTime, responseTime) {
-  const totalTime = responseTime - requestTime
+function printTime(req, requestTime, totalTime) {
   console.log(
     `${requestTime.format('YYYY-MM-DD HH:mm:ss')} | ${req.method} from ${
       req.originalUrl
@@ -17,15 +14,13 @@ function printTime(req, requestTime, responseTime) {
   )
 }
 
-// Set up middlewares
-app.use(function (req, res, next) {
-  receiveRequestTime = moment()
-  res.on('finish', () => {
-    sendResponseTime = moment()
-    printTime(req, receiveRequestTime, sendResponseTime)
+// Set up middleware
+app.use(
+  responseTime((req, res, time) => {
+    const receiveRequestTime = moment()
+    printTime(req, receiveRequestTime, time)
   })
-  next()
-})
+)
 
 app.get('/', (req, res) => {
   res.send('列出全部 Todo')
