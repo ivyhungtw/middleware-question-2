@@ -7,12 +7,7 @@ const moment = require('moment')
 let receiveRequestTime
 let sendResponseTime
 
-// Set up middlewares
-app.use(function (req, res, next) {
-  receiveRequestTime = moment()
-  next()
-})
-
+// Functions
 function printTime(req, requestTime, responseTime) {
   const totalTime = responseTime - requestTime
   console.log(
@@ -22,28 +17,31 @@ function printTime(req, requestTime, responseTime) {
   )
 }
 
+// Set up middlewares
+app.use(function (req, res, next) {
+  receiveRequestTime = moment()
+  console.log(receiveRequestTime)
+  res.on('finish', () => {
+    sendResponseTime = moment()
+    printTime(req, receiveRequestTime, sendResponseTime)
+  })
+  next()
+})
+
 app.get('/', (req, res) => {
   res.send('列出全部 Todo')
-  sendResponseTime = moment()
-  printTime(req, receiveRequestTime, sendResponseTime)
 })
 
 app.get('/new', (req, res) => {
   res.send('新增 Todo 頁面')
-  sendResponseTime = moment()
-  printTime(req, receiveRequestTime, sendResponseTime)
 })
 
 app.get('/:id', (req, res) => {
   res.send('顯示一筆 Todo')
-  sendResponseTime = moment()
-  printTime(req, receiveRequestTime, sendResponseTime)
 })
 
 app.post('/', (req, res) => {
   res.send('新增一筆  Todo')
-  sendResponseTime = moment()
-  printTime(req, receiveRequestTime, sendResponseTime)
 })
 
 app.listen(port, () => {
