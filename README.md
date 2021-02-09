@@ -1,5 +1,6 @@
 # Time Stamps Printer
 
+![Example](/public/photos/example.png)
 A middleware to print request time stamp, route, and total time in the terminal.
 
 ## Features
